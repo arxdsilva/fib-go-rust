@@ -11,8 +11,6 @@ func benchmarkFib(fibN uint, b *testing.B) {
 	for i := 2; i < b.N; i++ {
 		wg.Add(1)
 		go FibonacciBig(fibN, &wg)
-		// wg.Add(1)
-		// FibonacciBig(fibN, &wg)
 	}
 	wg.Wait()
 }
