@@ -27,18 +27,10 @@ fn fib(n: usize) -> BigUint {
 
 
 #[bench]
-fn bench_fib(b: &mut Bencher) {
+fn bench_fib_2k(b: &mut Bencher) {
     b.iter(|| {
-        let (tx, rx) = mpsc::channel();
-        for _ in 0..2000 {
-            let tx = tx.clone();
-            thread::spawn(move || {
-                fib(1000);
-                tx.send(());
-            });
-        }
-        for _ in 0..2000 {
-            rx.recv();
-        }
+        thread::spawn(move || {
+            fib(2000);
+        });
     });
 }
