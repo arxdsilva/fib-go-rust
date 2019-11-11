@@ -1,19 +1,15 @@
-#![feature(test)]
+// #![feature(test)]
 extern crate num_bigint_dig as num_bigint;
 extern crate num_traits;
-extern crate test;
+// extern crate test;
 
+use std::time::{SystemTime, UNIX_EPOCH};
 use num_bigint::BigUint;
 use num_traits::{Zero, One};
 use std::mem::replace;
-use test::Bencher;
+// use test::Bencher;
 use std::thread;
 use std::sync::mpsc;
-
-
-fn main() {
-    println!("fib(1000) = {}", fib(1000));
-}
 
 fn fib(n: usize) -> BigUint {
     let mut f0: BigUint = Zero::zero();
@@ -25,12 +21,102 @@ fn fib(n: usize) -> BigUint {
     f0
 }
 
-
-#[bench]
-fn bench_fib_2k(b: &mut Bencher) {
-    b.iter(|| {
-        thread::spawn(move || {
-            fib(2000);
-        });
-    });
+fn main() {
+    let start = SystemTime::now();
+    fib_thread(2000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_2k    {}ns/op", ns/2000);
+    // 3k threads
+    let start = SystemTime::now();
+    fib_thread(3000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_3k    {}ns/op", ns/2000);
+    // 10k threads
+    let start = SystemTime::now();
+    fib_thread(10000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_10k    {}ns/op", ns/2000);
+    // 20k threads
+    let start = SystemTime::now();
+    fib_thread(20000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_20k    {}ns/op", ns/2000);
+    // 40k threads
+    let start = SystemTime::now();
+    fib_thread(40000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_40k    {}ns/op", ns/2000);
 }
+
+fn fib_thread(n: usize) {
+    let (tx, rx) = mpsc::channel();
+    for _ in 0..2000 {
+        let tx = tx.clone();
+        thread::spawn(move || {
+            fib(n);
+            tx.send(());
+        });
+    }
+    for _ in 0..2000 {
+        rx.recv().ok();
+    }
+}
+
+// #[bench]
+// fn bench_fib_3k(b: &mut Bencher) {
+//     b.iter(|| {
+//         let (tx, rx) = mpsc::channel();
+//         for _ in 0..2000 {
+//             let tx = tx.clone();
+//             thread::spawn(move || {
+//                 fib(3000);
+//                 tx.send(());
+//             });
+//         }
+//         for _ in 0..2000 {
+//             rx.recv();	
+//         }
+//     });
+// }
+
+// #[bench]
+// fn bench_fib_10k(b: &mut Bencher) {
+//     b.iter(|| {
+//         let (tx, rx) = mpsc::channel();
+//         for _ in 0..2000 {
+//             let tx = tx.clone();
+//             thread::spawn(move || {
+//                 fib(10000);
+//                 tx.send(());
+//             });
+//         }
+//         for _ in 0..2000 {
+//             rx.recv();	
+//         }
+//     });
+// }
+
+// #[bench]
+// fn bench_fib_20k(b: &mut Bencher) {
+//      b.iter(|| {fib_thread(20000)});
+// }
+
+// #[bench]
+// fn bench_fib_40k(b: &mut Bencher) {
+//      b.iter(|| {fib_thread(40000)});
+// }
