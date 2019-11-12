@@ -10,6 +10,7 @@ use std::mem::replace;
 // use test::Bencher;
 use std::thread;
 use std::sync::mpsc;
+use threadpool::ThreadPool;
 
 fn fib(n: usize) -> BigUint {
     let mut f0: BigUint = Zero::zero();
@@ -21,7 +22,7 @@ fn fib(n: usize) -> BigUint {
     f0
 }
 
-fn main() {
+fn main_pure_threads() {
     let start = SystemTime::now();
     fib_thread(2000);
     let end = SystemTime::now();
@@ -104,6 +105,48 @@ fn main() {
     println!("fib_seq_40k    {} ns/op", ns/250);
 }
 
+fn main(){
+    let start = SystemTime::now();
+    fib_thread_pool(2000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_2k    {} ns/op", ns/2000);
+    // 3k threads
+    let start = SystemTime::now();
+    fib_thread_pool(3000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_3k    {} ns/op", ns/2000);
+    // 10k threads
+    let start = SystemTime::now();
+    fib_thread_pool(10000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_10k    {} ns/op", ns/2000);
+    // 20k threads
+    let start = SystemTime::now();
+    fib_thread_pool(20000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_20k    {} ns/op", ns/2000);
+    // 40k threads
+    let start = SystemTime::now();
+    fib_thread_pool(40000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start)
+        .expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_40k    {} ns/op", ns/2000);
+}
+
 fn fib_thread(n: usize) {
     let (tx, rx) = mpsc::channel();
     for _ in 0..2000 {
@@ -118,6 +161,21 @@ fn fib_thread(n: usize) {
     }
 }
 
+fn fib_thread_pool(n: usize) {
+    let n_workers = 120;
+    let pool = ThreadPool::new(n_workers);
+    let (tx, rx) = mpsc::channel();
+    for _ in 0..2000 {
+        let tx = tx.clone();
+        pool.execute(move|| {
+            fib(n);
+            tx.send(1).expect("channel will be there waiting for the pool");
+        });
+    }
+    for _ in 0..2000 {
+        rx.recv().ok();
+    }
+}
 
 fn fib_seq(n: usize, size: usize) {
     for _ in 0..size {
