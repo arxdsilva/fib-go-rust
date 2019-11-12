@@ -64,7 +64,7 @@ fn main() {
     // fib sequential
     // 2k threads
     let start = SystemTime::now();
-    fib_seq(2000);
+    fib_seq(2000, 25000);
     let end = SystemTime::now();
     let duration = end.duration_since(start)
         .expect("Time went backwards");
@@ -72,7 +72,7 @@ fn main() {
     println!("fib_seq_2k    {}ns/op", ns/2000);
     // 3k threads
     let start = SystemTime::now();
-    fib_seq(3000);
+    fib_seq(3000, 14000);
     let end = SystemTime::now();
     let duration = end.duration_since(start)
         .expect("Time went backwards");
@@ -80,7 +80,7 @@ fn main() {
     println!("fib_seq_3k    {}ns/op", ns/2000);
     // 10k threads
     let start = SystemTime::now();
-    fib_seq(10000);
+    fib_seq(10000, 2500);
     let end = SystemTime::now();
     let duration = end.duration_since(start)
         .expect("Time went backwards");
@@ -88,7 +88,7 @@ fn main() {
     println!("fib_seq_10k    {}ns/op", ns/2000);
     // 20k threads
     let start = SystemTime::now();
-    fib_seq(20000);
+    fib_seq(20000, 900);
     let end = SystemTime::now();
     let duration = end.duration_since(start)
         .expect("Time went backwards");
@@ -96,7 +96,7 @@ fn main() {
     println!("fib_seq_20k    {}ns/op", ns/2000);
     // 40k threads
     let start = SystemTime::now();
-    fib_seq(40000);
+    fib_seq(40000, 250);
     let end = SystemTime::now();
     let duration = end.duration_since(start)
         .expect("Time went backwards");
@@ -119,8 +119,8 @@ fn fib_thread(n: usize) {
 }
 
 
-fn fib_seq(n: usize) {
-    for _ in 0..2000 {
+fn fib_seq(n: usize, size: usize) {
+    for _ in 0..size {
         fib(n);
     }
 }
