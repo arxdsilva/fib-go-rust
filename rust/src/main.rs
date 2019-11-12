@@ -69,7 +69,7 @@ fn main() {
     let duration = end.duration_since(start)
         .expect("Time went backwards");
     let ns = duration.as_nanos();
-    println!("fib_2k    {}ns/op", ns/2000);
+    println!("fib_seq_2k    {}ns/op", ns/2000);
     // 3k threads
     let start = SystemTime::now();
     fib_seq(3000);
@@ -77,7 +77,7 @@ fn main() {
     let duration = end.duration_since(start)
         .expect("Time went backwards");
     let ns = duration.as_nanos();
-    println!("fib_3k    {}ns/op", ns/2000);
+    println!("fib_seq_3k    {}ns/op", ns/2000);
     // 10k threads
     let start = SystemTime::now();
     fib_seq(10000);
@@ -85,7 +85,7 @@ fn main() {
     let duration = end.duration_since(start)
         .expect("Time went backwards");
     let ns = duration.as_nanos();
-    println!("fib_10k    {}ns/op", ns/2000);
+    println!("fib_seq_10k    {}ns/op", ns/2000);
     // 20k threads
     let start = SystemTime::now();
     fib_seq(20000);
@@ -93,7 +93,7 @@ fn main() {
     let duration = end.duration_since(start)
         .expect("Time went backwards");
     let ns = duration.as_nanos();
-    println!("fib_20k    {}ns/op", ns/2000);
+    println!("fib_seq_20k    {}ns/op", ns/2000);
     // 40k threads
     let start = SystemTime::now();
     fib_seq(40000);
@@ -101,7 +101,7 @@ fn main() {
     let duration = end.duration_since(start)
         .expect("Time went backwards");
     let ns = duration.as_nanos();
-    println!("fib_40k    {}ns/op", ns/2000);
+    println!("fib_seq_40k    {}ns/op", ns/2000);
 }
 
 fn fib_thread(n: usize) {
