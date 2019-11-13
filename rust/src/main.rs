@@ -51,6 +51,14 @@ fn main() {
     let duration = end.duration_since(start);
     let ns = duration.as_nanos();
     println!("fib_40k    {} ns/op", ns / 2500);
+
+    let size = 2500;
+    let start = Instant::now();
+    run_fib(50000, size);
+    let end = Instant::now();
+    let duration = end.duration_since(start);
+    let ns = duration.as_nanos();
+    println!("fib_50k    {} ns/op", ns / 2500);
 }
 
 fn run_fib(n: usize, size: usize) {

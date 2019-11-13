@@ -20,6 +20,7 @@ func BenchmarkFib3k(b *testing.B)  { benchmarkFib(3000, b) }
 func BenchmarkFib10k(b *testing.B) { benchmarkFib(10000, b) }
 func BenchmarkFib20k(b *testing.B) { benchmarkFib(20000, b) }
 func BenchmarkFib40k(b *testing.B) { benchmarkFib(40000, b) }
+func BenchmarkFib50k(b *testing.B) { benchmarkFib(50000, b) }
 
 func benchmarkFibSeq(fibN uint, b *testing.B) {
 	b.ReportAllocs()
