@@ -1,8 +1,22 @@
 ### about
 This is a comparison of golang's and rust's performance for a implementation of fibonacci algorithm. 
 
+### running
+
+#### go
+```
+    $ cd go
+    $ go run test -bench=.
+```
+
+#### rust
+```
+    $ cd rust
+    $ cargo run --release
+```
+
 ### results
-OBS: rust is the `async-std` branch
+
 
 | name       | average (ns/operation)|
 |------------|----------------------|
