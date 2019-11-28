@@ -8,7 +8,7 @@ import (
 func benchmarkFib(fibN uint, b *testing.B) {
 	b.ReportAllocs()
 	var wg sync.WaitGroup
-	for i := 2; i < b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		wg.Add(1)
 		go FibonacciBig(fibN, &wg)
 	}
