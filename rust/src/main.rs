@@ -89,16 +89,16 @@ async fn fib(n: usize) -> BigUint {
 //     println!("fib_2k    {} ns/op", ns/2000);
 // }
 
-// fn fib_thread(n: usize) {
-//     let (tx, rx) = mpsc::channel();
-//     for _ in 0..2000 {
-//         let tx = tx.clone();
-//         thread::spawn(move || {
-//             fib(n);
-//             tx.send(());
-//         });
-//     }
-//     for _ in 0..2000 {
-//         rx.recv().ok();
-//     }
-// }
+fn fib_thread(n: usize) {
+    let (tx, rx) = mpsc::channel();
+    for _ in 0..2000 {
+        let tx = tx.clone();
+        thread::spawn(move || {
+            fib(n);
+            tx.send(());
+        });
+    }
+    for _ in 0..2000 {
+        rx.recv().ok();
+    }
+}
