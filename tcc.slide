@@ -1,0 +1,108 @@
+Abordagens modernas à concorrência e execução simultânea
+Estudo de caso: Rust vs Golang
+
+Arthur Rodrigues Xavier da Silva
+arxdsilva@gmail.com
+http://linkedin.com/in/arxdsilva
+@arxdsilva
+
+* Problemas
+- Crescimento do uso da internet (+Penetração, IoT)
+- Aplicações necessitam de cada vez mais desempenho para suportar grande volume de acessos e dados
+
+* Objetivo
+
+Como o desenvolvedor pode usar Go e Rust para tratar concorrência 
+
+- Análise comparativa
+- Vantagens e desvantagens
+
+Rust: 
+- Mozilla
+- Dropbox
+- Yelp
+- Amazon
+
+Golang:
+- Google
+- Globo.com
+- Tesla
+- Uber
+
+* Rust e Golang
+
+Rust: Compilada, multi-paradigma, resource acquisition is initialization (RAII).
+
+- Segurança para tipos e memória
+- Velocidade
+- Concorrência
+- Maior controle sobre a aplicação
+
+: 'proibe' ponteiros nulos, 
+
+Go: Compilada, multi-paradigma, estaticamente tipada, +garbage collection.
+
+- Simplicidade
+- Eficiência
+- Velocidade
+
+* Concorrência Rust - 'async_std'
+
+- Criação de Threads 1:1
+
+.code rust/src/main.rs /^async fn fib/,/^}/
+
+* Go: Gerenciamento de Goroutines
+
+.image imgs/fila.png 400 600
+
+* Concorrência Go
+
+- Função
+
+.code go/main.go /^func FibonacciBig/,/^}/
+
+- Chamada
+
+.code go/main_test.go /^	for/,/^}/
+
+
+* Benchmark Rust 'async_std'
+
+- 2nd
+
+.code rust/src/main.rs /^fn main/,/^    println!/
+
+.code rust/src/main.rs /^fn run_fib/,/^}/
+
+* Testes
+
+- Reprodutibilidade
+- Google Cloud
+- N2 Intel Cascade Lake CPUs
+- 24 vCPU's
+- 64 GB
+
+* Testes Go e Rust (htop)
+
+.image imgs/go45k.png _ 600
+.image imgs/rust45k.png _ 600
+
+
+* Testes Go e Rust (tempo por operação)
+
+.image imgs/gorust.png _ 600
+
+* Testes Go e Rust (tempo por operação)
+
+.image imgs/gorust2.png _ 600
+
+* Resultados
+
+- Rust utilizou até 61% menos tempo de vCPU
+- Rust foi melhor até fib(20k)
+- Go consumiu de 8.5 a 35% menos vCPU em todos os testes
+- Diferença de uso de vCPU em fib(40,50k) é 1% menor para Rust
+
+: Quando agregado uso de vCPU p Rust,Go em 40,50k,
+: economicamente Golang torna-se mais viavel

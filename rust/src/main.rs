@@ -79,15 +79,14 @@ async fn fib(n: usize) -> BigUint {
 }
 
 // old implementation
-// fn main2() {
-//     let start = SystemTime::now();
-//     fib_thread(2000);
-//     let end = SystemTime::now();
-//     let duration = end.duration_since(start)
-//         .expect("Time went backwards");
-//     let ns = duration.as_nanos();
-//     println!("fib_2k    {} ns/op", ns/2000);
-// }
+fn main2() {
+    let start = SystemTime::now();
+    fib_thread(2000);
+    let end = SystemTime::now();
+    let duration = end.duration_since(start).expect("Time went backwards");
+    let ns = duration.as_nanos();
+    println!("fib_2k    {} ns/op", ns/2000);
+}
 
 fn fib_thread(n: usize) {
     let (tx, rx) = mpsc::channel();
